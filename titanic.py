@@ -165,3 +165,6 @@ df['Title'] =  df.Name.map(lambda x : GetTitle(x))
 
 # Box plot of Age with title
 df[df.Age.notnull()].boxplot('Age','Title');
+
+# Box plot of Age with title
+df[df.Age.notnull()].boxplot('Age','Title');
