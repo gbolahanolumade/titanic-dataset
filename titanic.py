@@ -99,3 +99,69 @@ df.groupby(['Pclass', 'Embarked']).Fare.median()
 df.Embarked.fillna('C', inplace=True)
 
 df[df.Embarked.isnull()]
+
+median_fare = df.loc[(df.Pclass == 3) & (df.Embarked == 'S'),'Fare'].median()
+print (median_fare)
+
+df.Fare.fillna(median_fare, inplace=True)
+
+
+
+df.Age.plot(kind='hist', bins=20, color='c');
+
+
+# median values
+df.groupby('Sex').Age.median()
+
+# visualize using boxplot
+df[df.Age.notnull()].boxplot('Age','Sex');
+
+
+# option 3 : replace with median age of Pclass
+df[df.Age.notnull()].boxplot('Age','Pclass');
+
+
+
+# Function to extract the title from the name 
+def GetTitle(name):
+    first_name_with_title = name.split(',')[1]
+    title = first_name_with_title.split('.')[0]
+    title = title.strip().lower()
+    return title
+
+# use map function to apply the function on each Name value row i
+df.Name.map(lambda x : GetTitle(x)) # alternatively you can use : df.Name.map(GetTitle)
+
+
+df.Name.map(lambda x : GetTitle(x)).unique()
+# Function to extract the title from the name 
+def GetTitle(name):
+    title_group = {'mr' : 'Mr', 
+               'mrs' : 'Mrs', 
+               'miss' : 'Miss', 
+               'master' : 'Master',
+               'don' : 'Sir',
+               'rev' : 'Sir',
+               'dr' : 'Officer',
+               'mme' : 'Mrs',
+               'ms' : 'Mrs',
+               'major' : 'Officer',
+               'lady' : 'Lady',
+               'sir' : 'Sir',
+               'mlle' : 'Miss',
+               'col' : 'Officer',
+               'capt' : 'Officer',
+               'the countess' : 'Lady',
+               'jonkheer' : 'Sir',
+               'dona' : 'Lady'
+                 }
+    first_name_with_title = name.split(',')[1]
+    title = first_name_with_title.split('.')[0]
+    title = title.strip().lower()
+    return title_group[title]
+
+# create Title feature
+df['Title'] =  df.Name.map(lambda x : GetTitle(x))
+
+# Box plot of Age with title
+df[df.Age.notnull()].boxplot('Age','Title');
