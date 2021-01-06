@@ -68,3 +68,34 @@ aggregations = {
 
 df.groupby(['Pclass']).agg(aggregations)
 
+pd.crosstab(df.Sex, df.Pclass)
+
+pd.crosstab(df.Sex, df.Pclass).plot(kind='bar');
+
+
+# pivot table
+df.pivot_table(index='Sex',columns = 'Pclass',values='Age', aggfunc='mean')
+
+df.groupby(['Sex','Pclass']).Age.mean().unstack()
+
+
+# extract rows with Embarked as Null
+df[df.Embarked.isnull()]
+
+# how many people embarked at different points
+df.Embarked.value_counts()
+
+# which embarked point has higher survival count
+pd.crosstab(df[df.Survived != -888].Survived, df[df.Survived != -888].Embarked)
+
+
+
+
+# Option 2 : explore the fare of each class for each embarkment point
+df.groupby(['Pclass', 'Embarked']).Fare.median()
+
+
+# replace the missing values with 'C'
+df.Embarked.fillna('C', inplace=True)
+
+df[df.Embarked.isnull()]
