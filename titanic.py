@@ -201,3 +201,66 @@ df['Fare_Bin'] = pd.qcut(df.Fare, 4, labels=['very_low','low','high','very_high'
 
 
 #Feauture Engineering
+
+#Agestate
+df['AgeState'] = np.where(df['Age']>=18, 'Adult','Child')
+
+df['AgeState'].value_counts()
+
+pd.crosstab(df[df.Survived != -55].Survived, df[df.Survived != -55].AgeState)
+
+
+# Family : 
+df['FamilySize'] = df.Parch + df.SibSp + 1
+
+# explore the family feature
+df['FamilySize'].plot(kind='hist', color='c');
+
+# further explore this family with max family members
+df.loc[df.FamilySize == df.FamilySize.max(),['Name','Survived','FamilySize','Ticket']]
+
+
+pd.crosstab(df[df.Survived != -888].Survived, df[df.Survived != -888].FamilySize)
+
+
+# a lady aged more thana 18 who has Parch >0 and is married (not Miss)
+df['IsMother'] = np.where(((df.Sex == 'female') & (df.Parch > 0) & (df.Age > 18) & (df.Title != 'Miss')), 1, 0)
+
+
+# Crosstab with IsMother
+pd.crosstab(df[df.Survived != -888].Survived, df[df.Survived != -888].IsMother)
+
+
+# explore Cabin values
+df.Cabin
+
+# use unique to get unique values for Cabin feature
+df.Cabin.unique()
+
+
+# look at the Cabin = T
+df.loc[df.Cabin == 'T']
+
+
+
+# set the value to NaN
+df.loc[df.Cabin == 'T', 'Cabin'] = np.NaN
+
+# look at the unique values of Cabin again
+df.Cabin.unique()
+# extract first character of Cabin string to the deck
+def get_deck(cabin):
+    return np.where(pd.notnull(cabin),str(cabin)[0].upper(),'Z')
+df['Deck'] = df['Cabin'].map(lambda x : get_deck(x))
+# check counts
+df.Deck.value_counts()
+
+
+
+# use crosstab to look into survived feature cabin wise
+pd.crosstab(df[df.Survived != -888].Survived, df[df.Survived != -888].Deck)
+
+
+#CATEGORICAL FEATURE ENGINEERING
+
+
