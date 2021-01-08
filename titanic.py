@@ -263,4 +263,21 @@ pd.crosstab(df[df.Survived != -888].Survived, df[df.Survived != -888].Deck)
 
 #CATEGORICAL FEATURE ENGINEERING
 
+# sex
+df['IsMale'] = np.where(df.Sex == 'male', 1, 0)
+# columns Deck, Pclass, Title, AgeState
+df = pd.get_dummies(df,columns=['Deck', 'Pclass','Title', 'Fare_Bin', 'Embarked','AgeState'])
+
+df.info()
+
+# drop columns
+df.drop(['Cabin','Name','Ticket','Parch','SibSp','Sex'], axis=1, inplace=True)
+
+# reorder columns
+columns = [column for column in df.columns if column != 'Survived']
+columns = ['Survived'] + columns
+df = df[columns]
+
+df.info()
+
 
