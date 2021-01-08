@@ -168,3 +168,36 @@ df[df.Age.notnull()].boxplot('Age','Title');
 
 # Box plot of Age with title
 df[df.Age.notnull()].boxplot('Age','Title');
+
+# replace missing values
+title_age_median = df.groupby('Title').Age.transform('median')
+df.Age.fillna(title_age_median , inplace=True)
+
+
+#Exploring Outliers
+df.Age.plot(kind='hist', bins=20, color='c')
+
+df.loc[df.Age > 70]
+
+df.Fare.plot(kind='box', title='histogram of Fare')
+
+df.Fare.plot(kind='hist', title='histogram for Fare', bins=20, color='c');
+
+#Reducing Skewness
+LogFare = np.log(df.Fare + 1)
+
+# Histogram of LogFare
+LogFare.plot(kind='hist', color='c', bins=20);
+
+# binning
+pd.qcut(df.Fare, 4)
+
+pd.qcut(df.Fare, 4, labels=['very_low','low','high','very_high']) # discretization
+
+pd.qcut(df.Fare, 4, labels=['very_low','low','high','very_high']).value_counts().plot(kind='bar', color='c', rot=0);
+
+# create fare bin feature
+df['Fare_Bin'] = pd.qcut(df.Fare, 4, labels=['very_low','low','high','very_high'])
+
+
+#Feauture Engineering
